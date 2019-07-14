@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mapbox-gl": "^1.0.0",
+    "directory-named-webpack-plugin": "^4.0.1",
+    "gun": "^0.2019.627",
+    "mapbox-gl": "^1.1.0",
     "next": "^8.1.0",
     "next-offline": "^4.0.2",
     "react": "^16.8.6",

@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 const NavbarBottom = props => {
   const buttons = [
     {icon: 'fas fa-users', label: 'team' },
@@ -42,7 +40,7 @@ const Wrapper = styled.div`
 const BorderTop = styled.div`
   background-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0 .65),
+    rgba(0, 0, 0, .65),
     rgba(0, 0, 0, 0)
   );
   border-top: 0.125rem black solid;

@@ -1,3 +1,5 @@
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
+const path = require('path')
 const webpack = require('webpack')
 
 const withOffline = moduleExists('next-offline')
@@ -5,14 +7,16 @@ const withOffline = moduleExists('next-offline')
   : {}
 
 const customWebpackConfig = config => {
+  config.resolve.alias['src'] = path.join(__dirname, 'src')
+  config.resolve.plugins = [new DirectoryNamedWebpackPlugin()]
   config.plugins.push(
     new webpack.ProvidePlugin({
+      classNames: 'classnames',
       Component: ['react', 'Component'],
       css: ['styled-components', 'css'],
       forwardRef: ['react', 'forwardRef'],
       Fragment: ['react', 'Fragment'],
-      // TODO: Get this working. ~ RM
-      // styled: 'styled-components',
+      styled: ['styled-components', 'default'],
       useCallback: ['react', 'useCallback'],
       useContext: ['react', 'useContext'],
       useEffect: ['react', 'useEffect'],
@@ -47,7 +51,6 @@ const nextConfig = {
     ]
   }
 }
-
 
 module.exports = moduleExists('next-offline')
   ? withOffline(nextConfig)

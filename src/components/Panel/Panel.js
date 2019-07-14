@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 const Panel = props => {
   const [isSticky, setIsSticky] = useState(false)
   const isEventListenerAdded = useRef(false)

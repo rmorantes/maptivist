@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 const PanelTeam_TeamMember = props => (
   <Wrapper>
     <Avatar src={props.avatar}/>
-    
+
     {/* TODO: '23 min ago'  */}
     {props.isOnline &&
       <IndicatorOnline/>

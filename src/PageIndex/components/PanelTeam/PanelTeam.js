@@ -1,8 +1,7 @@
-import styled from 'styled-components'
-import Panel from '../../../components/Panel/Panel'
-import PanelTeam_TeamMember from './components/TeamMember/TeamMember'
+import Panel from 'src/components/Panel'
+import PanelTeam_TeamMember from './components/TeamMember'
 
-const PanelTeam = props => {
+const PageIndex_PanelTeam = props => {
   // TEMP: Pending actual users. ~ RM
   // TODO: Use Faker.js to mock users. ~ RM
   const teamMembers = [
@@ -29,10 +28,10 @@ const PanelTeam = props => {
   return (
     <Panel label="Team">
       {teamMembers.map((teamMember, i) => (
-        <PanelTeam_TeamMember key={i} {...teamMember}/>
+        <PageIndex_PanelTeam_TeamMember key={i} {...teamMember}/>
       ))}
     </Panel>
   )
 }
 
-export default PanelTeam
+export default PageIndex_PanelTeam
