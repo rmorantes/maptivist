@@ -32,7 +32,7 @@ const TextBackground = styled(TextForeground)`
     from {background-position: right;}
     to {background-position: left;}
   }
-  animation: gradient 4s linear infinite;
+  animation: gradient 10s linear infinite;
   background: linear-gradient(
     to left,
     white,

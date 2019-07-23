@@ -26,11 +26,7 @@ const SignUpSignIn_Input = props => (
 
     {typeof props.isValid === 'boolean' && props.value &&
       <IconValidity
-        className={
-          props.isValid ?
-          'fas fa-check-circle' :
-          'fas fa-times-circle'
-        }
+        className={props.isValid ? 'fas fa-check' : 'fas fa-times'}
         isValid={props.isValid}
       />
     }
@@ -47,7 +43,6 @@ const OverlayRectangleMod = styled(OverlayRectangle)`
 `
 
 const Field = styled.input`
-  color: black;
   flex: 1;
   font-size: 1.25rem;
   padding-top: 0.25rem;
@@ -64,7 +59,8 @@ const IconType = styled.i`
 `
 
 const IconValidity = styled.i`
-  color: ${props => props.isValid ? 'green' : 'red'};
+  color: ${props => props.isValid ? '#00ff00' : 'red'};
+  font-size: 1.25rem;
   line-height: var(--height);
   margin-left: 0.5rem;
 `

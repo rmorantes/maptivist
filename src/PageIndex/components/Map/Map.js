@@ -2,57 +2,66 @@ import sleep from 'src/services/sleep'
 
 const PageIndex_Map = props => {
   const map = useRef()
+  const user = useRef()
+  const initiallyHiddenLayers = [
+    'admin-0-boundary',
+    'admin-0-boundary-bg',
+    'admin-0-boundary-disputed',
+    'country-label'
+  ]
 
-  const initialize = () => {
-    (async () => {
-      const panDuration = 20000
+  useEffect(() => {
+    user.current = props.user
+
+    if (!map.current) {
+      // NOTE: Publically available access token. ~ RM
+      // https://docs.mapbox.com/mapbox-gl-js/example/simple-map/
+      // TODO: Hide access token. ~ RM
+      mapboxgl.accessToken = 'pk.eyJ1Ijoicm1vcmFudGVzIiwiYSI6ImNqYTRtaWp5MzRjcXEzMXBveWViOGNjYm0ifQ.lt1qdGpfbbrT328BOUhIpQ'
+      const panDuration = 30000
+      // Picks three random equidistant longitudes between which to pan so as
+      // not to favor a particular region.
       const offset = Math.floor(Math.random() * 121)
       const longitudes = [0, -120, -240].map(longitude => longitude - offset)
       let cycle = Math.floor(Math.random() * longitudes.length)
 
-      if (!map.current) {
-        // NOTE: Publically available access token. ~ RM
-        // https://docs.mapbox.com/mapbox-gl-js/example/simple-map/
-        // TODO: Hide access token. ~ RM
-        mapboxgl.accessToken = 'pk.eyJ1Ijoicm1vcmFudGVzIiwiYSI6ImNqYTRtaWp5MzRjcXEzMXBveWViOGNjYm0ifQ.lt1qdGpfbbrT328BOUhIpQ'
+      // TODO: Add user location icons to map. ~ RM
+      map.current = new mapboxgl.Map({
+        center: [longitudes[cycle], 0],
+        container: 'listing-map',
+        maxZoom: 20,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        zoom: 1.5
+      })
 
-        // TODO: Add user location icons to map. ~ RM
-        const newMap = new mapboxgl.Map({
-          center: [longitudes[cycle], 0],
-          container: 'listing-map',
-          maxZoom: 20,
-          style: 'mapbox://styles/mapbox/streets-v11',
-          zoom: 1.5
-        })
+      map.current.on('load', () => {
+        for (let layer of initiallyHiddenLayers) {
+          map.current.setLayoutProperty(layer, 'visibility', 'none')
+        }
+      })
 
-        newMap.on('load', () => {
-          const layers = [
-            'admin-0-boundary',
-            'admin-0-boundary-bg',
-            'admin-0-boundary-disputed',
-            'country-label'
-          ]
-
-          for (let layer of layers) {
-            newMap.setLayoutProperty(layer, 'visibility', 'none')
-          }
-        })
-
-        map.current = newMap
-        // TODO: Implement transition from auto-panning to geotracking. ~ RM
-        // startGeotracking()
+      const startPanning = async () => {
+        if (!user.current) {
+          cycle = cycle === longitudes.length - 1 ? 0 : cycle + 1
+          map.current.panTo([longitudes[cycle], 0], {
+            duration: panDuration,
+            easing: t => t
+          })
+          await sleep(panDuration)
+          startPanning()
+        }
       }
 
-      while (true) {
-        cycle = cycle === longitudes.length - 1 ? 0 : cycle + 1
-        map.current.panTo([longitudes[cycle], 0], {
-          duration: panDuration,
-          easing: t => t
-        })
-        await sleep(panDuration)
+      startPanning()
+    } else if (user.current) {
+      // Freezes panning.
+      map.current.setCenter(map.current.getCenter())
+      for (let layer of initiallyHiddenLayers) {
+        map.current.setLayoutProperty(layer, 'visibility', 'visible')
       }
-    })()
-  }
+      startGeotracking()
+    }
+  }, [props.user])
 
   const startGeotracking = () => {
     const success = position => {
@@ -70,21 +79,17 @@ const PageIndex_Map = props => {
     }
 
     const id = navigator.geolocation.watchPosition(success, error)
+    // TODO: Toggleable geotracking. ~ RM
     // TODO: Cleanup. ~ RM
     // navigator.geolocation.clearWatch(id)
   }
 
-  useEffect(initialize)
-
-  return (
-    <Wrapper id='listing-map'/>
-  )
+  return <Wrapper id='listing-map'/>
 }
 
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
-  transition: all 0.2s;
 `
 
 export default PageIndex_Map

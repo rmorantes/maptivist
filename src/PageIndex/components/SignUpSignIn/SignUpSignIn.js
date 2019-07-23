@@ -1,38 +1,67 @@
 import Button from 'src/components/Button'
 import SignUpSignIn_Heading from './components/Heading'
 import SignUpSignIn_Input from './components/Input'
+import { useStateValue } from 'src/services/context'
 
 const PageIndex_SignUpSignIn = props => {
+  const [error, setError] = useState()
   const [isSigningUp, setIsSigningUp] = useState(false)
+  const [valueAlias, setValueAlias] = useState('')
   const [valuePassword, setValuePassword] = useState('')
-  const [valueUsername, setValueUsername] = useState('')
+  const [{ gun }, dispatch] = useStateValue()
+  const user = gun.user()
+
+  const callback = response => {
+    const publicKey = response.pub || response.soul && response.soul.slice(1)
+    if (publicKey) {
+      dispatch({
+        type: 'AUTH_SET_USER',
+        user: {
+          alias: valueAlias,
+          publicKey: publicKey
+        }
+      })
+    } else {
+      setError(response.err)
+      setValuePassword('')
+      setValueAlias('')
+    }
+  }
 
   const onClickSignIn = () => {
     if (!isSigningUp) {
-      console.log('Attempting sign in')
+      user.auth(valueAlias, valuePassword, callback)
     } else {
       setValuePassword('')
-      setValueUsername('')
+      setValueAlias('')
       setIsSigningUp(false)
     }
   }
 
   const onClickSignUp = () => {
     if (isSigningUp) {
-      console.log('Attempting sign up')
+      user.create(valueAlias, valuePassword, callback)
     } else {
       setValuePassword('')
-      setValueUsername('')
+      setValueAlias('')
       setIsSigningUp(true)
     }
   }
 
-  const onChangePassword = e => {
-    setValuePassword(e.target.value)
+  const onClickTemporaryAccount = () => {
+    // TEMP: There's probably a better way of generating a temporary alias. ~ RM
+    const alias = 'Anonymous' + String(Date.now()).slice(5)
+    user.create(alias, '111111', callback)
   }
 
-  const onChangeUsername = e => {
-    setValueUsername(e.target.value)
+  const onChangePassword = e => {
+    setValuePassword(e.target.value)
+    setError()
+  }
+
+  const onChangeAlias = e => {
+    setValueAlias(e.target.value)
+    setError()
   }
 
   const validatePassword = () => {
@@ -43,9 +72,9 @@ const PageIndex_SignUpSignIn = props => {
     return isValid
   }
 
-  const validateUsername = () => {
+  const validateAlias = () => {
     let isValid = false
-    if (valueUsername.length > 5) {
+    if (valueAlias.length > 5) {
       isValid = true
     }
     return isValid
@@ -56,11 +85,15 @@ const PageIndex_SignUpSignIn = props => {
       <SignUpSignIn_Heading> MAPTIVIST </SignUpSignIn_Heading>
 
       <Form>
+        {error &&
+          <Error> {error} </Error>
+        }
+
         <SignUpSignIn_Input
-          isValid={isSigningUp ? validateUsername() : null}
-          onChange={onChangeUsername}
+          isValid={isSigningUp ? validateAlias() : null}
+          onChange={onChangeAlias}
           type='alias'
-          value={valueUsername}
+          value={valueAlias}
         />
         <SignUpSignIn_InputMod
           isValid={isSigningUp ? validatePassword() : null}
@@ -73,7 +106,7 @@ const PageIndex_SignUpSignIn = props => {
             isFaded={isSigningUp}
             isPulsing={
               !isSigningUp &&
-              validateUsername() &&
+              validateAlias() &&
               validatePassword()
             }
             onClick={onClickSignIn}
@@ -85,7 +118,7 @@ const PageIndex_SignUpSignIn = props => {
             isFaded={!isSigningUp}
             isPulsing={
               isSigningUp &&
-              validateUsername()
+              validateAlias()
               && validatePassword()
             }
             onClick={onClickSignUp}
@@ -94,7 +127,10 @@ const PageIndex_SignUpSignIn = props => {
             Sign Up
           </ButtonSubmit>
         </Buttons>
-        <ButtonTemporaryAccount>
+        <ButtonTemporaryAccount
+          onClick={onClickTemporaryAccount}
+          type='button'
+        >
           Continue with <br/> Temporary Account
         </ButtonTemporaryAccount>
       </Form>
@@ -121,6 +157,10 @@ const Form = styled.form`
   margin-top: 20vh;
   max-width: 30rem;
   width: 100%;
+`
+
+const Error = styled.p`
+  color: red;
 `
 
 const SignUpSignIn_InputMod = styled(SignUpSignIn_Input)`

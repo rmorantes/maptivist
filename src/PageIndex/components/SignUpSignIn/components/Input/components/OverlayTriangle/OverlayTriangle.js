@@ -6,17 +6,17 @@ const OverlayTriangle = props => (
 )
 
 const Wrapper = styled.div`
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(0, 0, 0, 0.75);
   clip-path: polygon(100% 0, 100% 100%, 0 50%);
   height: 100%;
-  width: 100%;
   position: relative;
+  width: 100%;
 `
 
 const BorderRight = styled.div`
   background-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, .65),
+    rgba(0, 0, 0, 0.65),
     rgba(0, 0, 0, 0)
   );
   border-top: 0.125rem black solid;
@@ -31,8 +31,8 @@ const BorderRight = styled.div`
 const BorderLeft = styled.div`
   background-image: linear-gradient(
     to top,
-    rgba(0,0,0,.65),
-    rgba(0,0,0,0)
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0)
   );
   border-bottom: 0.125rem black solid;
   bottom: 0.4rem;

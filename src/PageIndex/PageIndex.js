@@ -3,11 +3,12 @@ import NavbarBottom from 'src/components/NavbarBottom'
 import PageIndex_Map from './components/Map'
 import PageIndex_PanelTeam from './components/PanelTeam'
 import PageIndex_SignUpSignIn from './components/SignUpSignIn'
+import { useStateValue } from 'src/services/context'
 
 const PageIndex = () => {
   const [activeTab, setActiveTab] = useState(null)
   const [hasPointerEvents, setHasPointerEvents] = useState(false)
-  const [user, setUser] = useState(false)
+  const [{ user }] = useStateValue()
 
   return (
     <main>
@@ -19,7 +20,6 @@ const PageIndex = () => {
         <link href='https://use.fontawesome.com/releases/v5.8.2/css/all.css' rel='stylesheet'/>
         <link href='https://fonts.googleapis.com/css?family=Aldrich|Roboto+Condensed&display=swap' rel='stylesheet'/>
         <link href='/static/manifest.webmanifest' rel='manifest'/>
-        <script src='faker.js' type='text/javascript'/>
         <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'/>
       </Head>
 
@@ -63,10 +63,11 @@ const PageIndex = () => {
         `}
       </style>
 
-      <PageIndex_Map isPanning={!Boolean(user)}/>
+      <PageIndex_Map user={user}/>
 
       {user ? (
         <Fragment>
+          {/* TODO: Add placeholder panels for other tabs. ~ RM */}
           {activeTab === 'team' &&
             <PageIndex_PanelTeam
               hasPointerEvents={hasPointerEvents}
@@ -82,11 +83,6 @@ const PageIndex = () => {
       ) : (
         <PageIndex_SignUpSignIn/>
       )}
-
-
-      {/* TODO: Add placeholder panels for other tabs. ~ RM */}
-
-
     </main>
   )
 }

@@ -7,7 +7,7 @@ const OverlayRectangle = props => (
 )
 
 const Wrapper = styled.div`
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(0, 0, 0, 0.75);
   height: 100%;
   position: relative;
   width: 100%;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 const BorderTop = styled.div`
   background-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, .65),
+    rgba(0, 0, 0, 0.65),
     rgba(0, 0, 0, 0)
   );
   border-top: 0.125rem black solid;
@@ -29,7 +29,7 @@ const BorderTop = styled.div`
 const BorderBottom = styled.div`
   background-image: linear-gradient(
     to top,
-    rgba(0, 0, 0, .65),
+    rgba(0, 0, 0, 0.65),
     rgba(0, 0, 0, 0)
   );
   border-bottom: 0.125rem black solid;
