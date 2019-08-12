@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 const Panel = props => {
   const [isSticky, setIsSticky] = useState(false)
   const isEventListenerAdded = useRef(false)
@@ -32,11 +30,12 @@ const Panel = props => {
     if (!isEventListenerAdded.current) {
       isEventListenerAdded.current = true
       scrollContainerRef.current.addEventListener('scroll', onScroll)
+      scrollContainerRef.current.scrollBy(0, 200)
     }
   })
 
   return (
-    <Container ref={scrollContainerRef}>
+    <Container ref={scrollContainerRef} id="scroll-me">
       <Content
         onTouchEnd={onTouchEnd}
         onTouchStart={onTouchStart}
@@ -74,7 +73,8 @@ const Content = styled.div`
   background: var(--themeOverlayBackgroundColor);
   display: flex;
   flex-direction: column;
-  margin-top: calc(100vh - 11rem);
+  margin-top: calc(100vh - 4.5rem);
+  min-height: calc(100vh - 4.625rem);
   pointer-events: auto !important;
   position: relative;
   width: 100%;
@@ -99,9 +99,10 @@ const Bar = styled.div`
   justify-content: center;
   left: 0;
   margin-top: -1.125rem;
+  overflow: hidden;
   position: sticky;
   top: 0;
-  z-index: 3;
+  z-index: 4;
 `
 
 const Label = styled.button`
@@ -128,12 +129,11 @@ const Label = styled.button`
   font-size: var(--fontSize);
   line-height: var(--fontSize);
   margin: auto;
+  min-width: ${props => props.isSticky ? '123vw' : 0};
   padding: var(--paddingTopAldrich) var(--dimension) var(--padding);
-  transition: all 0.2s;
-  ${props => props.isSticky && css`
-    padding-left: 51vw;
-    padding-right: 51vw;
-  `}
+  transition-duration: 0.2s;
+  transition-property: min-width;
+  transition-timing-function: linear;
 `
 
 export default Panel

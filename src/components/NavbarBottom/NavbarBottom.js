@@ -1,12 +1,10 @@
-import styled from 'styled-components'
-
 const NavbarBottom = props => {
   const buttons = [
-    {icon: 'fas fa-users', label: 'team' },
-    {icon: 'fas fa-microphone', label: 'audio'},
-    {icon: 'fas fa-comment', label: 'message'},
-    {icon: 'fas fa-camera', label: 'camera'},
-    {icon: 'fas fa-pen', label: 'notes'}
+    {icon: 'fas fa-comment', label: 'comms'},
+    {icon: 'fas fa-users', label: 'groups' },
+    {icon: 'fas fa-user', label: 'profile'},
+    {icon: 'fas fa-file', label: 'files'},
+    {icon: 'fas fa-flag', label: 'organizations'}
   ]
 
   return (
@@ -42,7 +40,7 @@ const Wrapper = styled.div`
 const BorderTop = styled.div`
   background-image: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0 .65),
+    rgba(0, 0, 0, .65),
     rgba(0, 0, 0, 0)
   );
   border-top: 0.125rem black solid;
@@ -54,7 +52,6 @@ const BorderTop = styled.div`
 `
 
 const Button = styled.button`
-  border: none;
   border-radius: 50%;
   font-size: 1.25rem;
   height: 2.5rem;
