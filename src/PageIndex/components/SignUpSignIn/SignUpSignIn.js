@@ -83,6 +83,7 @@ const PageIndex_SignUpSignIn = props => {
   return (
     <Wrapper>
       <SignUpSignIn_Heading> MAPTIVIST </SignUpSignIn_Heading>
+      <Disclaimer> Maptivist is a work in progress and has yet to be optimized for desktop and tablet screen resolutions </Disclaimer>
 
       <Form>
         {error &&
@@ -150,6 +151,12 @@ const Wrapper = styled.div`
   width: 100vw;
 `
 
+const Disclaimer = styled.h3`
+  color: black;
+  padding: 0.5rem 0.5rem 0.5rem;
+  text-shadow: 0 0 0.25rem white;
+`
+
 const Form = styled.form`
   align-items: center;
   display: flex;
@@ -188,6 +195,7 @@ const ButtonSubmit = styled(Button)`
   margin-top: 1rem;
   opacity: ${props => props.isFaded ? 0.25 : 1};
 `
+
 const ButtonTemporaryAccount = styled(Button)`
   height: 3.5rem;
   margin-top: 8rem;

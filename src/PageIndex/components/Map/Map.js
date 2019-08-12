@@ -59,7 +59,7 @@ const PageIndex_Map = props => {
       for (let layer of initiallyHiddenLayers) {
         map.current.setLayoutProperty(layer, 'visibility', 'visible')
       }
-      startGeotracking()
+      // startGeotracking()
     }
   }, [props.user])
 
@@ -84,12 +84,27 @@ const PageIndex_Map = props => {
     // navigator.geolocation.clearWatch(id)
   }
 
-  return <Wrapper id='listing-map'/>
+  return <Wrapper id='listing-map' isHidingAttributions={!props.user}/>
 }
 
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
+  .mapboxgl-ctrl-bottom-left {
+    left: -0.25rem;
+    top: 0.25rem !important;
+  }
+  .mapboxgl-ctrl-bottom-right {
+    right: -0.375rem;
+    top: -0.125rem !important;
+    a {
+      font-size: 0.8rem;
+    }
+  }
+  .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
+    opacity: ${props => props.isHidingAttributions ? 0 : 1};
+    transition: opacity 1s;
+  }
 `
 
 export default PageIndex_Map
