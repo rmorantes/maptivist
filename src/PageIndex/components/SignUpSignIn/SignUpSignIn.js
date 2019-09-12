@@ -11,15 +11,16 @@ const PageIndex_SignUpSignIn = props => {
   const [{ gun }, dispatch] = useStateValue()
   const user = gun.user()
 
-  const callback = response => {
-    const publicKey = response.pub || response.soul && response.soul.slice(1)
-    if (publicKey) {
+  const callback = (response)=> {
+    if (!response.err) {
+      // TEMP: For now, all users automatically join group_1, pending a UI for
+      // group creation and administration. ~ RM
+      gun.get('users').set(user)
+      gun.get('group_1').get('members').set(user)
+
       dispatch({
         type: 'AUTH_SET_USER',
-        user: {
-          alias: valueAlias,
-          publicKey: publicKey
-        }
+        user: user
       })
     } else {
       setError(response.err)
@@ -50,8 +51,8 @@ const PageIndex_SignUpSignIn = props => {
 
   const onClickTemporaryAccount = () => {
     // TEMP: There's probably a better way of generating a temporary alias. ~ RM
-    const alias = 'Anonymous' + String(Date.now()).slice(5)
-    user.create(alias, '111111', callback)
+    const tempAlias = 'Anonymous' + String(Date.now()).slice(5)
+    user.create(tempAlias, '111111', response => callback(response))
   }
 
   const onChangePassword = e => {
