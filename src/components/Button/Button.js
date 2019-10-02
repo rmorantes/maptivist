@@ -19,7 +19,6 @@ const Wrapper = styled.button`
     0 50%,
     var(--dimension) 0
   );
-  font-size: 1.25rem;
   padding: 0.625rem var(--dimension) 0.25rem;
 `
 

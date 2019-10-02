@@ -44,7 +44,6 @@ const OverlayRectangleMod = styled(OverlayRectangle)`
 
 const Field = styled.input`
   flex: 1;
-  font-size: 1.25rem;
   padding-top: 0.25rem;
   text-align: left;
   width: 100%;
