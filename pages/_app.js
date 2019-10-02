@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import Gun from 'gun/gun'
 import initialState from 'src/services/initialState'
 import reducer from 'src/services/reducer'
@@ -7,32 +7,42 @@ import { StateContextProvider } from 'src/services/context'
 // is not a function". ~ RM
 import 'gun/sea'
 
-const gun = Gun('https://maptivist.randymorantes.now.sh')
+// TODO: Implement own server. ~ RM
 
-const group_1 = gun.get('group_1').put({
-  createdAt: Date.now(),
-  description: 'This group is tasked with nonviolent conflict mitigation and de-escalation. Members are marked by orange reflective vests.',
-  members: null,
-  name: 'Peacekeepers',
-  organization: 'Veterans for Peace',
-  size: null
-})
-
-// TEMP: Pending group creation UI and/or better seed method. ~ RM
-gun.get('groups').set(group_1)
+// // TEMP: Pending group creation UI and/or better seed method. ~ RM
+// const gun = Gun('https://gunjs.herokuapp.com/gun')
+// const group = gun.put({
+//   // NOTE: Gun.js doesn't seem to support empty objects, and setting the
+//   // annotations field when the first user adds their first annotation results
+//   // in every other user encountering a 'Mismatched owner on 'fieldName' error
+//   // when they attempt to modify the annotations field. Thus for now, for
+//   // seeding, and BEFORE a user has signed in, an empty object is initialized
+//   // with a useless field. ~ RM
+//   annotations: {thisFieldforInitializingPurposesOnly: null},
+//   description: 'This group is tasked with nonviolent conflict mitigation and de-escalation. Members are marked by orange reflective vests.',
+//   // NOTE: For some reason, I haven't encountered mismatched owner issues with
+//   // the members field, possibly because members are user/gun references vs
+//   // objects. ~ RM
+//   members: null,
+//   name: 'Peacekeepers'
+// })
+// // NOTE: In the future, users will likely need to iterate through a list of
+// // all groups. ~ RM
+// gun.get('groups').set(group)
 
 class AppMod extends App {
-  render () {
+  render() {
     const { Component, pageProps } = this.props
     return (
-      <Container>
-        <StateContextProvider
-          initialState={{...initialState, gun: gun}}
-          reducer={reducer}
-        >
-          <Component {...pageProps} />
-        </StateContextProvider>
-      </Container>
+      <StateContextProvider
+        initialState={{
+          ...initialState,
+          gun: Gun('https://gunjs.herokuapp.com/gun')
+        }}
+        reducer={reducer}
+      >
+        <Component {...pageProps} />
+      </StateContextProvider>
     )
   }
 }

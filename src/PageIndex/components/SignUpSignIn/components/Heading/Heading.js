@@ -1,7 +1,7 @@
 import OverlayRectangle from 'src/components/OverlayRectangle'
 
 const Heading = props => (
-  <OverlayRectangleMod hasBorderBottom hasBorderTop>
+  <OverlayRectangleMod hasBorderBottom hasBorderTop className={props.className}>
     <TextForeground> {props.children} </TextForeground>
     <TextBackground> {props.children} </TextBackground>
   </OverlayRectangleMod>

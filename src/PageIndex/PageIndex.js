@@ -1,3 +1,4 @@
+import DrawMenu from './components/DrawMenu'
 import Head from 'next/head'
 import NavbarBottom from 'src/components/NavbarBottom'
 import PageIndex_Map from './components/Map'
@@ -90,7 +91,9 @@ const PageIndex = () => {
               setHasPointerEvents={setHasPointerEvents}
             />
           )}
-
+          {true &&
+            <DrawMenu/>
+          }
           <NavbarBottom
             activeTab={activeTab}
             setActiveTab={setActiveTab}

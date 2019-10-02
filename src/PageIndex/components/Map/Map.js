@@ -1,10 +1,15 @@
 import sleep from 'src/services/sleep'
 import { useStateValue } from 'src/services/context'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
+import LAYERS from './services/LAYERS'
+import DRAW_STYLES from './services/DRAW_STYLES'
 
+// TODO: HTML cluster markers. ~ RM
+// https://blog.mapbox.com/clustering-properties-with-mapbox-and-html-markers-bb353c8662ba
 const PageIndex_Map = props => {
   const map = useRef()
   const user2 = useRef()
-  const [{ gun, user }] = useStateValue()
+  const [{ draw, gun, user }, dispatch] = useStateValue()
   const initiallyHiddenLayers = [
     'admin-0-boundary',
     'admin-0-boundary-bg',
@@ -33,78 +38,59 @@ const PageIndex_Map = props => {
       map.current = new mapboxgl.Map({
         center: [longitudes[cycle], 0],
         container: 'listing-map',
-        maxZoom: 20,
         style: 'mapbox://styles/mapbox/streets-v11',
         zoom: 1.5
       })
+
+      const Draw = new MapboxDraw({displayControlsDefault: false})
+
+      dispatch({
+        draw: Draw,
+        map: map.current,
+        type: 'SET_MAP'
+      })
+
+      map.current.addControl(Draw)
+
+      const drawLogic = e => {
+        if (e.features && e.features.length) {
+          const geojson = JSON.stringify(e.features[0])
+          const annotation = user2.current.get('activeGroup').get('annotations').set({
+            // // NOTE: Inline references not yet supported. ~ RM
+            // // https://gun.eco/docs/API#unexpected-behavior
+            // creator: gun.user(user2.current.is.pub),
+            geojson: geojson
+          })
+          annotation.get('creator').put(gun.user(user2.current.is.pub))
+        }
+      }
+
+      map.current.on('draw.actionable', drawLogic)
+      map.current.on('draw.modechange', drawLogic)
+      // The `draw.selectionchange` event is necessary to access select + drag
+      // movement as the other events do not.
+      map.current.on('draw.selectionchange', drawLogic)
+      map.current.on('draw.update', drawLogic)
 
       map.current.on('load', () => {
         for (let layer of initiallyHiddenLayers) {
           map.current.setLayoutProperty(layer, 'visibility', 'none')
         }
 
-        map.current.addSource('group_1', {
+        map.current.addSource('groupMembers', {
           data: {
             'features': [],
             'type': 'FeatureCollection'
           },
           cluster: true,
-          clusterMaxZoom: 14,
+          clusterMaxZoom: 18,
           clusterRadius: 50,
           type: 'geojson'
         })
 
-        map.current.addLayer({
-          filter: ['has', 'point_count'],
-          id: 'clusters',
-          paint: {
-            'circle-color': [
-              'step',
-              ['get', 'point_count'],
-              '#51bbd6',
-              100,
-              '#f1f075',
-              750,
-              '#f28cb1'
-            ],
-            'circle-radius': [
-              'step',
-              ['get', 'point_count'],
-              20,
-              100,
-              30,
-              750,
-              40
-            ]
-          },
-          source: 'group_1',
-          type: 'circle'
-        })
-
-        map.current.addLayer({
-          filter: ['has', 'point_count'],
-          id: 'cluster-count',
-          layout: {
-            'text-field': '{point_count_abbreviated}',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-size': 12
-          },
-          source: 'group_1',
-          type: 'symbol'
-        })
-
-        map.current.addLayer({
-          filter: ['!', ['has', 'point_count']],
-          id: 'unclustered-point',
-          paint: {
-            'circle-color': '#11b4da',
-            'circle-radius': 4,
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#fff'
-          },
-          source: 'group_1',
-          type: 'circle'
-        })
+        for (let layer of LAYERS) {
+          map.current.addLayer(layer)
+        }
       })
 
       const startPanning = async () => {
@@ -121,26 +107,51 @@ const PageIndex_Map = props => {
 
       startPanning()
     } else if (user2.current) {
+      const group = user2.current.get('activeGroup')
+
       // Stops panning.
       map.current.setCenter(map.current.getCenter())
       for (let layer of initiallyHiddenLayers) {
         map.current.setLayoutProperty(layer, 'visibility', 'visible')
       }
+
+      group.get('annotations').map(annotation => {
+        // If annotation has not been deleted.
+        if (annotation) {
+          // BUG: Somehow, annotations are appearing in both string and JS form.
+          // Handling both cases for now. ~ RM
+          if (typeof annotation.geojson === 'string') {
+            draw.add(JSON.parse(annotation.geojson))
+          } else {
+            draw.add(annotation.geojson)
+          }
+        } else {
+          // TODO: If gun.js annotation has been deleted but corresponding
+          // MapboxDraw annotation has not, then delete the latter. ~ RM
+        }
+      })
+
       // TODO: This is done via user gesture. ~ RM
       startGeotracking()
 
       setInterval(() => {
         const features = []
-        gun.get('group_1').get('members').map(member => {
+        // TODO: If users are offline for < N minutes, their icons become grey.
+        // If users are offline for > N minutes, their icons are not rendered.
+        // ~ RM
+        group.get('members').map(member => {
           features.push({
             'geometry': {
               'coordinates': [member.longitude, member.latitude],
               'type': 'Point'
             },
+            'properties': {
+              'alias': member.alias
+            },
             'type': 'Feature'
           })
         })
-        map.current.getSource('group_1').setData({
+        map.current.getSource('groupMembers').setData({
           'features': features,
           'type': 'FeatureCollection'
         })
