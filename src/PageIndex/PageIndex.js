@@ -10,6 +10,7 @@ import PageIndex_PanelProfile from './components/PanelProfile'
 import PageIndex_SignUpSignIn from './components/SignUpSignIn'
 import { useStateValue } from 'src/services/context'
 
+// TODO: Look into SPR: https://zeit.co/blog/serverless-pre-rendering. ~ RM
 const PageIndex = () => {
   const [activeTab, setActiveTab] = useState(null)
   const [hasPointerEvents, setHasPointerEvents] = useState(false)

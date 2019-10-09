@@ -3,13 +3,17 @@ import SignUpSignIn_Heading from './components/Heading'
 import SignUpSignIn_Input from './components/Input'
 import { useStateValue } from 'src/services/context'
 
+// QUESTION: For how long should temporary users persist? ~ RM
 // TODO: Load icon/experience while authenticating. ~ RM
 // TODO: Sign out. ~ RM
 // TODO: Offline/online tracking. ~ RM
 // TODO: Users cannot double sign in? Or they are at least notified? ~ RM
-// QUESTION: For how long should temporary users persist? ~ RM
+// TODO: Break this component up. ~ RM
+// TODO: Sign up/in only required to join groups and such (like Waze and
+// Liveuamap). So, this component only appears in response to user gesture. ~ RM
 const PageIndex_SignUpSignIn = props => {
   const [error, setError] = useState()
+  const [isRetrievingCredentials, setIsRetrievingCredentials] = useState(true)
   const [isSigningUp, setIsSigningUp] = useState(false)
   const [valueAlias, setValueAlias] = useState('')
   const [valuePassword, setValuePassword] = useState('')
@@ -119,69 +123,99 @@ const PageIndex_SignUpSignIn = props => {
     return isValid
   }
 
+  useEffect(() => {
+    if (isRetrievingCredentials) {
+      // User stays signed in through page refreshes and reloads, but not
+      // through tab closing.
+      user.recall({sessionStorage: true}, response => {
+        if (response && response.sea) {
+          dispatch({
+            type: 'AUTH_SET_USER',
+            user: user
+          })
+        } else {
+          setIsRetrievingCredentials(false)
+        }
+      })
+
+      // NOTE: The user.recall() callback only fires if user has already
+      // authenticated in current tab, so the below handles the case of user
+      // having not yet authenticated. ~ RM
+      if (!window.sessionStorage.recall) {
+        setIsRetrievingCredentials(false)
+      }
+    }
+  })
+
   return (
     <Wrapper>
       <SignUpSignIn_HeadingMod> MAPTIVIST </SignUpSignIn_HeadingMod>
+
       <Disclaimer> Maptivist is a work in progress and has yet to be optimized for desktop and tablet screen resolutions. </Disclaimer>
 
-      <Form>
-        {error &&
-          <Error> {error} </Error>
-        }
+      {!isRetrievingCredentials &&
+        <Form>
+          {error &&
+            <Error> {error} </Error>
+          }
 
-        <SecurityNotice>
-          <SecurityNoticeHeader> SECURITY NOTICE </SecurityNoticeHeader>
-          Maptivist is a work in progress and may be unsecure! Do not reuse important passwords (bank, email, etc) or use it to share sensitive information.
-        </SecurityNotice>
+          <SecurityNotice>
+            <SecurityNoticeHeader> SECURITY NOTICE </SecurityNoticeHeader>
+            Maptivist is a work in progress and may be unsecure! Do not reuse important passwords (bank, email, etc) or use it to share sensitive information.
+          </SecurityNotice>
 
-        <SignUpSignIn_Input
-          isValid={isSigningUp ? validateAlias() : null}
-          onChange={onChangeAlias}
-          type='alias'
-          value={valueAlias}
-        />
-        <SignUpSignIn_InputMod
-          isValid={isSigningUp ? validatePassword() : null}
-          onChange={onChangePassword}
-          type='password'
-          value={valuePassword}
-        />
-        <Buttons>
-          <ButtonSubmit
-            isFaded={isSigningUp}
-            isPulsing={
-              !isSigningUp &&
-              validateAlias() &&
-              validatePassword()
-            }
-            onClick={onClickSignIn}
+          <SignUpSignIn_Input
+            isValid={isSigningUp ? validateAlias() : null}
+            onChange={onChangeAlias}
+            type='alias'
+            value={valueAlias}
+          />
+
+          <SignUpSignIn_InputMod
+            isValid={isSigningUp ? validatePassword() : null}
+            onChange={onChangePassword}
+            type='password'
+            value={valuePassword}
+          />
+
+          <Buttons>
+            <ButtonSubmit
+              isFaded={isSigningUp}
+              isPulsing={
+                !isSigningUp &&
+                validateAlias() &&
+                validatePassword()
+              }
+              onClick={onClickSignIn}
+              type='button'
+            >
+              Sign In
+            </ButtonSubmit>
+
+            <Or> or </Or>
+
+            <ButtonSubmit
+              isFaded={!isSigningUp}
+              isPulsing={
+                isSigningUp &&
+                validateAlias()
+                && validatePassword()
+              }
+              onClick={onClickSignUp}
+              type='button'
+            >
+              Sign Up
+            </ButtonSubmit>
+          </Buttons>
+
+          <ButtonTemporaryAccount
+            onClick={onClickTemporaryAccount}
             type='button'
           >
-            Sign In
-          </ButtonSubmit>
-
-          <Or> or </Or>
-
-          <ButtonSubmit
-            isFaded={!isSigningUp}
-            isPulsing={
-              isSigningUp &&
-              validateAlias()
-              && validatePassword()
-            }
-            onClick={onClickSignUp}
-            type='button'
-          >
-            Sign Up
-          </ButtonSubmit>
-        </Buttons>
-        <ButtonTemporaryAccount
-          onClick={onClickTemporaryAccount}
-          type='button'
-        >
-          Continue with <br/> Temporary Account
-        </ButtonTemporaryAccount>
-      </Form>
+            Continue with <br/> Temporary Account
+          </ButtonTemporaryAccount>
+        </Form>
+      }
     </Wrapper>
   )
 }

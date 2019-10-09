@@ -6,6 +6,10 @@ import DRAW_STYLES from './services/DRAW_STYLES'
 
 // TODO: HTML cluster markers. ~ RM
 // https://blog.mapbox.com/clustering-properties-with-mapbox-and-html-markers-bb353c8662ba
+// TODO: UI for adjusting camera pitch. ~ RM
+// TODO: UI for camera orbit (radius, direction, speed). ~ RM
+// TODO: Some way of quickly bookmarking and panning to locations. ~ RM
+// TODO: A minimap. ~ RM
 const PageIndex_Map = props => {
   const map = useRef()
   const user2 = useRef()
