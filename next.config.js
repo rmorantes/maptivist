@@ -1,6 +1,7 @@
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
+const withCSS = require('@zeit/next-css')
 
 const withOffline = moduleExists('next-offline')
   ? require('next-offline')
@@ -30,7 +31,11 @@ const customWebpackConfig = config => {
   return config
 }
 
-const nextConfig = {
+// NOTE: `withCSS()` so `import 'mapbox-gl/dist/mapbox-gl.css'` works. ~ RM
+const nextConfig = withCSS({
+  devIndicators: {
+    autoPrerender: false,
+  },
   target: 'serverless',
   webpack: customWebpackConfig,
   workboxOpts: {
@@ -53,7 +58,7 @@ const nextConfig = {
       }
     ]
   }
-}
+})
 
 module.exports = moduleExists('next-offline')
   ? withOffline(nextConfig)
