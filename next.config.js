@@ -10,6 +10,7 @@ const withOffline = moduleExists('next-offline')
 const customWebpackConfig = config => {
   config.resolve.alias['src'] = path.join(__dirname, 'src')
   config.resolve.plugins = [new DirectoryNamedWebpackPlugin()]
+  // config.resolve.extensions = ['.svg']
   // QUESTION: Is there a better way to fix this? ~ RM
   // https://github.com/exceljs/exceljs/issues/299#issuecomment-382425619
   config.node = {fs: 'empty'}
@@ -28,6 +29,8 @@ const customWebpackConfig = config => {
       useState: ['react', 'useState']
     })
   )
+
+  // console.log("webpack config = ", config)
   return config
 }
 
