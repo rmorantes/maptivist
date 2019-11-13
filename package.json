@@ -19,7 +19,7 @@
     "directory-named-webpack-plugin": "^4.0.1",
     "gun": "^0.2019.930",
     "mapbox-gl": "^1.5.0",
-    "next": "^9.1.2",
+    "next": "^9.1.3",
     "next-offline": "^4.0.6",
     "node-webcrypto-ossl": "^1.0.48",
     "react": "^16.11.0",

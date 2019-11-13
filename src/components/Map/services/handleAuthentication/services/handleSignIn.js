@@ -34,20 +34,20 @@ const handleSignIn = (
     // ~ RM
     group.get('members').map(member => {
       features.push({
-        'geometry': {
-          'coordinates': [member.longitude, member.latitude],
-          'type': 'Point'
+        geometry: {
+          coordinates: [member.longitude, member.latitude],
+          type: 'Point'
         },
-        'properties': {
-          'alias': member.alias
+        properties: {
+          alias: member.alias
         },
-        'type': 'Feature'
+        type: 'Feature'
       })
     })
 
     map.getSource('groupMembers').setData({
-      'features': features,
-      'type': 'FeatureCollection'
+      features: features,
+      type: 'FeatureCollection'
     })
   }
 
@@ -70,13 +70,13 @@ const handleSignIn = (
   })
 
   map.addSource('groupMembers', {
-    data: {
-      'features': [],
-      'type': 'FeatureCollection'
-    },
     cluster: true,
     clusterMaxZoom: 18,
     clusterRadius: 50,
+    data: {
+      features: [],
+      type: 'FeatureCollection'
+    },
     type: 'geojson'
   })
 

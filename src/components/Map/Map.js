@@ -8,6 +8,7 @@ import { useStateValue } from 'src/services/context'
 // TODO: Hit tab, map camera pans to next item (member in a group, point in a
 // route, and so on). ~ RM
 // TODO: A minimap. ~ RM
+// TODO: Clicking other nearby layers doesn't select MapboxDraw features. ~ RM
 // IDEA: Multiple maps accessible via tab bar, with corresponding panes. ~ RM
 const Map = props => {
   const [{ draw, gun, user }, dispatch] = useStateValue()

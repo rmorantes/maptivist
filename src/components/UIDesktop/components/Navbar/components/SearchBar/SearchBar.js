@@ -1,3 +1,5 @@
+// IDEA: Search map for users and such. ~ RM
+// * https://docs.mapbox.com/mapbox-gl-js/example/filter-markers-by-input/
 const SearchBar = props => (
   <Wrapper onSubmit={e => {
     alert('Feature pending!')
