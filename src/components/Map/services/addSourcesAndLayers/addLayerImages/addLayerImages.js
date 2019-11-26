@@ -22,9 +22,9 @@ const addLayerImages = async map => {
     // Icons must scale in size with number of digits contained within.
     const digits = svgPath.match(/\d+/g)[0] || '1'
     const dimension = (
-      digits === '1' ? 40 :
-      digits === '2' ? 50 :
-      digits === '3' ? 60 : 70
+      digits === '1' ? 35 :
+      digits === '2' ? 45 :
+      digits === '3' ? 55 : 65
     )
     const image = await convertSvgToImage(svgPath, dimension, dimension)
     const imageName = convertSvgPathToCamelCaseName(svgPath)

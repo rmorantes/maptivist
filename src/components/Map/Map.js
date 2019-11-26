@@ -11,17 +11,27 @@ import { useStateValue } from 'src/services/context'
 // TODO: Clicking other nearby layers doesn't select MapboxDraw features. ~ RM
 // IDEA: Multiple maps accessible via tab bar, with corresponding panes. ~ RM
 const Map = props => {
-  const [{ draw, gun, user }, dispatch] = useStateValue()
+  const [{ draw, gun, map, user }, dispatch] = useStateValue()
   const [intervalId, setIntervalId] = useState()
   const [isMapLoaded, setIsMapLoaded] = useState()
-  const mapRef = useRef()
+  const markers = useRef({})
+  const markersOnScreen = useRef({})
+  const previousFeatureCount = useRef(0)
+  const [mapState, setMapState] = useState({
+    center: null,
+    pitch: null,
+    zoom: null
+  })
 
   // QUESTION: Can this be refactored as a custom hook? ~ RM
   useEffect(() => initializeMap(
     dispatch,
     gun,
-    mapRef,
+    markersOnScreen,
+    markers,
+    previousFeatureCount,
     setIsMapLoaded,
+    setMapState,
     user
   ), [])
 
@@ -31,10 +41,10 @@ const Map = props => {
     intervalId,
     isMapLoaded,
     gun,
-    mapRef.current,
+    map,
     setIntervalId,
     user
-  ), [isMapLoaded, mapRef, user])
+  ), [isMapLoaded, map, user])
 
   return <Wrapper id='map' isMobile={props.isMobile}/>
 }

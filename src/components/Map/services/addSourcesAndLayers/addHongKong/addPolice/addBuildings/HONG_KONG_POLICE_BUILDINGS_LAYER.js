@@ -3,6 +3,7 @@
 // (versus associated icon) doesn't trigger visibility. ~ RM
 // IDEA: Building icon size scales with importance (post < station < district HQ
 // < regional HQ). ~ RM
+// TODO: Buildings visible only at certain zoom level. ~ RM
 const HONG_KONG_POLICE_BUILDINGS_LAYER = {
   'id': 'hongKongPoliceBuildings',
   'layout': {
