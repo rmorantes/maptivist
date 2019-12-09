@@ -1,4 +1,4 @@
-const GlobalStyles = () =>(
+const GlobalStyles = () => (
   <style jsx global>
     {`
       *, *:before, *:after {

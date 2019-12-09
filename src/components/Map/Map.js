@@ -9,6 +9,8 @@ import { useStateValue } from 'src/services/context'
 // route, and so on). ~ RM
 // TODO: A minimap. ~ RM
 // TODO: Clicking other nearby layers doesn't select MapboxDraw features. ~ RM
+// TODO: A legend that upates according to what annoations are currently visible
+// on map. ~ RM
 // IDEA: Multiple maps accessible via tab bar, with corresponding panes. ~ RM
 const Map = props => {
   const [{ draw, gun, map, user }, dispatch] = useStateValue()
