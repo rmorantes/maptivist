@@ -2,11 +2,16 @@
 // rendering of other features. Also ensures that mouseover of invisible text
 // (versus associated icon) doesn't trigger visibility. ~ RM
 // TODO: Buildings visible only at certain zoom level. ~ RM
+// TODO: Replace/remove Mapbox police station layer
+// IDEA: Buildings become overlappable once zoomed in beyond unit annotation
+// clusterability. ~ RM
+// IDEA: Icon appears first, text appears later at higher zoom. ~ RM
 // IDEA: Building icon size and/or image scales with importance (post < station
 // < district HQ < regional HQ). ~ RM
 const LAYERS = [{
   id: 'HongKongPolice_buildings',
   layout: {
+    'icon-allow-overlap': true,
     'icon-image': 'policeBuilding',
     'icon-size': 0.75,
     'text-anchor': 'top',
@@ -24,7 +29,7 @@ const LAYERS = [{
       'bottom'
     ]
   },
-  minzoom: 10,
+  minzoom: 14,
   paint: {
     'text-halo-color': 'white',
     'text-halo-width': 2,

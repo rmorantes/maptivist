@@ -31,7 +31,7 @@ import 'gun/sea'
 // gun.get('groups').set(group)
 
 class AppMod extends App {
-  render() {
+  render () {
     const { Component, pageProps } = this.props
     return (
       <StateContextProvider

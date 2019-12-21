@@ -28,6 +28,12 @@ const ICONS = [
     image: 'policeBus',
     priority: 5,
     type: 'buses'
+  },
+  {
+    faction: 'HongKongPolice',
+    image: 'policeSedan',
+    priority: 6,
+    type: 'sedan'
   }
 ]
 

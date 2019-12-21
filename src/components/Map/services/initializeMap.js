@@ -16,7 +16,7 @@ const initializeMap = (
 ) => {
   const map = new mapboxgl.Map({
     accessToken: 'pk.eyJ1Ijoicm1vcmFudGVzIiwiYSI6ImNqYTRtaWp5MzRjcXEzMXBveWViOGNjYm0ifQ.lt1qdGpfbbrT328BOUhIpQ',
-    center: [114.16869276786753, 22.317047137772564],
+    center: [114.105942, 22.397843],
     container: 'map',
     // TODO: Replace Mapbox-served vector tiles (via the style prop) with
     // self-hosted vector tiles downloaded from OpenStreetMap. Maptiler's
@@ -28,7 +28,7 @@ const initializeMap = (
     // TODO: Design custom map style, attach to app (no Mapbox API call). ~ RM
     // * https://openmaptiles.org/docs/style/maputnik/
     style: 'mapbox://styles/mapbox/streets-v11',
-    zoom: 16
+    zoom: 10
   })
 
   const Draw = new MapboxDraw({
@@ -38,16 +38,43 @@ const initializeMap = (
 
   map.addControl(Draw)
 
+  // NOTE: For development. ~ RM ///////////////////////////////////////////////
+  const element = document.createElement('div')
+
+  element.style.cssText = `
+    background: red;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+  `
+
+  const marker = new mapboxgl.Marker(element, { draggable: true })
+
+  const round = (value, precision = 6) => {
+    const multiplier = Math.pow(10, precision || 0)
+    return Math.round(value * multiplier) / multiplier
+  }
+
+  marker.on('dragend', () => {
+    const lng = round(marker.getLngLat().lng)
+    const lat = round(marker.getLngLat().lat)
+    marker.setLngLat([lng, lat])
+    console.log(`coords = ${lng}, ${lat}`)
+  })
+  // ///////////////////////////////////////////////////////////////////////////
+
   map.on('load', async () => {
     addAnnotations(map)
     setIsMapLoaded(true)
 
-    // NOTE: For development. ~ RM
-    // TODO: A marker is placed at rounded coords. ~ RM
-    // map.on('click', function (e) {
-    //   console.log('map.style = ', map.getStyle())
-    //   console.log('coords = ', e.lngLat.lng, ',', e.lngLat.lat)
-    // })
+    // NOTE: For development. ~ RM /////////////////////////////////////////////
+    map.on('click', function (e) {
+      const lng = round(e.lngLat.lng)
+      const lat = round(e.lngLat.lat)
+      marker.setLngLat([lng, lat]).addTo(map)
+      console.log(`coords = ${lng}, ${lat}`)
+    })
+    // /////////////////////////////////////////////////////////////////////////
   })
 
   dispatch({
