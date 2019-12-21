@@ -17,14 +17,14 @@
     "@mapbox/mapbox-gl-draw": "^1.1.2",
     "@zeit/next-css": "^1.0.1",
     "directory-named-webpack-plugin": "^4.0.1",
-    "gun": "^0.2019.1120",
-    "mapbox-gl": "^1.6.0",
-    "next": "^9.1.5",
+    "gun": "^0.2019.1211",
+    "mapbox-gl": "^1.6.1",
+    "next": "^9.1.6",
     "next-offline": "^4.0.6",
     "node-webcrypto-ossl": "^1.0.48",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-rnd": "^10.1.2",
+    "react-rnd": "^10.1.3",
     "styled-components": "^4.4.1",
     "text-encoding": "^0.7.0"
   }

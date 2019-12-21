@@ -8,12 +8,12 @@ const withOffline = moduleExists('next-offline')
   : {}
 
 const customWebpackConfig = config => {
-  config.resolve.alias['src'] = path.join(__dirname, 'src')
+  config.resolve.alias.src = path.join(__dirname, 'src')
   config.resolve.plugins = [new DirectoryNamedWebpackPlugin()]
   // config.resolve.extensions = ['.svg']
   // QUESTION: Is there a better way to fix this? ~ RM
   // https://github.com/exceljs/exceljs/issues/299#issuecomment-382425619
-  config.node = {fs: 'empty'}
+  config.node = { fs: 'empty' }
   config.plugins.push(
     new webpack.ProvidePlugin({
       classNames: 'classnames',
@@ -30,14 +30,13 @@ const customWebpackConfig = config => {
     })
   )
 
-  // console.log("webpack config = ", config)
   return config
 }
 
 // NOTE: `withCSS()` so `import 'mapbox-gl/dist/mapbox-gl.css'` works. ~ RM
 const nextConfig = withCSS({
   devIndicators: {
-    autoPrerender: false,
+    autoPrerender: false
   },
   target: 'serverless',
   webpack: customWebpackConfig,
@@ -52,10 +51,10 @@ const nextConfig = withCSS({
           networkTimeoutSeconds: 15,
           expiration: {
             maxEntries: 150,
-            maxAgeSeconds: 30 * 24 * 60 * 60, // 1 month
+            maxAgeSeconds: 30 * 24 * 60 * 60 // 1 month
           },
           cacheableResponse: {
-            statuses: [0, 200],
+            statuses: [0, 200]
           }
         }
       }
@@ -67,9 +66,9 @@ module.exports = moduleExists('next-offline')
   ? withOffline(nextConfig)
   : nextConfig
 
-function moduleExists(name) {
+function moduleExists (name) {
   try {
-    return require.resolve(name);
+    return require.resolve(name)
   } catch (error) {
     return false
   }

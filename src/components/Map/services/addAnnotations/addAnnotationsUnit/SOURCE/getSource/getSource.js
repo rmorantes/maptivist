@@ -5,7 +5,7 @@ const getSource = () => ({
   cluster: true,
   clusterMaxZoom: 15,
   clusterProperties: getClusterProperties(),
-  clusterRadius: 100,
+  clusterRadius: 150,
   data: {
     features: MOCK_FEATURES,
     type: 'FeatureCollection'
