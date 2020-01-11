@@ -2,6 +2,7 @@ import { useStateValue } from 'src/services/context'
 import validateAlias from './services/validateAlias'
 import validatePassword from './services/validatePassword'
 
+// TODO: Integrate sign in logic with new db. ~ RM
 // QUESTION: For how long should temporary users persist? ~ RM
 const withSignInLogic = BaseComponent => props => {
   const [error, setError] = useState()
@@ -44,15 +45,12 @@ const withSignInLogic = BaseComponent => props => {
       // the time this line executes, hence the slice hack. Refactor associated
       // logic with useEffect(). ~ RM
       if (isSigningUp || user.is.alias.slice(0, 9) === 'Anonymous') {
-        // TEMP: For now, all users automatically join this particular group,
-        // pending a UI for group joining, creation, and administration. ~ RM
-        const group = gun.get('k186og53phEOMTGOOCQR')
+        const group = gun.get('defaultSettings').get('group')
         gun.get('groups').set(group)
         group.get('members').set(gun.user(response.pub))
         user.get('groups').set(group)
         user.get('activeGroup').put(group)
       }
-
       dispatch({
         type: 'AUTH_SET_USER',
         user: user

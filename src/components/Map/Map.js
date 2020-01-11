@@ -11,6 +11,31 @@ import { useStateValue } from 'src/services/context'
 // TODO: Clicking other nearby layers doesn't select MapboxDraw features. ~ RM
 // TODO: A legend that upates according to what annoations are currently visible
 // on map. ~ RM
+// TODO: UI for layer management. Collections of layer collections are used to
+// indicate associations, facilitate mangement (ex: disable "Hong Kong" to hide
+// all subcollections), merge subcollection clusters (ex: "Cars" and "Buses" are
+// merged into "Vehicles", such that their associated icons are replaced with
+// another selected icon upon clustering or even when not, depending on
+// settings), and so on. By default, leaf layer collection clusters do not merge
+// with other such clusters, although they do form a superCluster according to
+// settings. Something like:
+//
+//   Hong Kong             (collection)
+//     Government          (collection)
+//       Facilities        (layer)
+//       Vehicles          (layer + collection) (clusterMerge: true)
+//         Cars            (layer) (cluster: true)
+//         Buss            (layer) (cluster: true)
+//       Units             (layer + collection)
+//         Crowd control   (layer) (cluster: true)
+//         Medic           (layer) (cluster: true)
+//     Media               (collection)
+//       Reporter          (layer) (cluster: true)
+//     Protesters          (layer + collection)
+//       Medic             (layer) (cluster: true)
+//       Crowd             (layer) (cluster: true)
+//
+// ~ RM
 // IDEA: Multiple maps accessible via tab bar, with corresponding panes. ~ RM
 const Map = props => {
   const [{ draw, gun, map, user }, dispatch] = useStateValue()

@@ -13,6 +13,10 @@ const NextHead = () => (
       href='/static/manifest.webmanifest'
       rel='manifest'
     />
+    <link
+      href='/static/favicon.ico'
+      rel='shortcut icon'
+    />
   </Head>
 )
 
