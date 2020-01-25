@@ -1,6 +1,7 @@
 import handleSignIn from './services/handleSignIn'
 import handleSignOut from './services/handleSignOut'
 
+// TODO: User map icons cluster with other unit icons. ~ RM
 const handleAuthentication = (
   draw,
   intervalId,

@@ -7,24 +7,28 @@ const handleSignIn = (
   setIntervalId,
   user
 ) => {
-  const panMapToUserLocation = (map, user) => {
+  const updateUserPosition = (map, user) => {
+    let hasPannedMap = false
     const success = position => {
       user.get('longitude').put(position.coords.longitude)
       user.get('latitude').put(position.coords.latitude)
-      map.jumpTo({
-        center: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        },
-        zoom: 10
-      })
+      if (!hasPannedMap) {
+        map.jumpTo({
+          center: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          },
+          zoom: 10
+        })
+        hasPannedMap = true
+      }
     }
 
     const error = error => {
       console.warn('ERROR(' + error.code + '): ' + error.message)
     }
 
-    navigator.geolocation.getCurrentPosition(success, error)
+    navigator.geolocation.watchPosition(success, error)
   }
 
   const updateGroupMembers = (group, map) => {
@@ -52,7 +56,6 @@ const handleSignIn = (
   }
 
   const group = user.get('activeGroup')
-
   group.get('annotations').map(annotation => {
     // If annotation has not been deleted/"tombstoned".
     if (annotation) {
@@ -80,6 +83,7 @@ const handleSignIn = (
     type: 'geojson'
   })
 
+  // TODO: Integrate with Gun database and unit icon clustering. ~ RM
   for (let layer of LAYERS_GROUP_MEMBERS) {
     map.addLayer(layer)
   }
@@ -104,8 +108,9 @@ const handleSignIn = (
   map.on('draw.selectionchange', drawLogic)
   map.on('draw.update', drawLogic)
 
+  // TODO: Replace `setInterval` with Gun subscriptions. ~ RM
   setIntervalId(setInterval(() => updateGroupMembers(group, map), 3000))
-  panMapToUserLocation(map, user)
+  updateUserPosition(map, user)
 }
 
 export default handleSignIn
