@@ -1,5 +1,6 @@
 import { useStateValue } from 'src/services/context'
 
+// TODO: Move this functionality elsewhere. ~ RM
 // TODO: Full CRUD UI for annotations, perhaps as seperate panel in addition to
 // map-based UI. Some way of browsing annotations would be helpful for
 // temporarily disabling, deleting ("WHERE on the map is it?"), and so on. ~ RM
@@ -17,12 +18,10 @@ const AnnotationMenu = () => {
         className='fas fa-map-marker-alt'
         onClick={() => draw.changeMode('draw_point')}
       />
-
       <Button
         className='fas fa-route'
         onClick={() => draw.changeMode('draw_line_string')}
       />
-
       <Button
         className='fas fa-draw-polygon'
         onClick={() => draw.changeMode('draw_polygon')}
@@ -32,7 +31,7 @@ const AnnotationMenu = () => {
 }
 
 const Buttons = styled.div`
-  bottom: 1rem;
+  bottom: 2rem;
   display: flex;
   justify-content: space-around;
   left: calc(50% - 5rem);
@@ -43,6 +42,7 @@ const Buttons = styled.div`
 const Button = styled.button`
   background-color: black;
   border-radius: 50%;
+  cursor: pointer;
   height: 2.5rem;
   width: 2.5rem;
 `

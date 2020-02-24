@@ -17,20 +17,20 @@ const Menu = props => {
         className='fab fa-github'
         href='https://github.com/rmorantes/maptivist'
       />
-      <Button className='fas fa-globe' onClick={()=> alert('Feature pending!')}/>
-      <Button className='fas fa-phone' onClick={()=> alert('Feature pending!')}/>
+      <Button className='fas fa-globe' onClick={() => alert('Feature pending!')} />
+      <Button className='fas fa-phone' onClick={() => alert('Feature pending!')} />
 
       {user ? (
         <ButtonSignInSignOut onClick={() => {
           user.leave()
-          dispatch({type: 'AUTH_SET_USER', user: null})
+          dispatch({ type: 'AUTH_SET_USER', user: null })
         }}>
-          <IconProfile className='fas fa-user-alt'/>
+          <IconProfile className='fas fa-user-alt' />
           Sign Out
         </ButtonSignInSignOut>
       ) : (
         <ButtonSignInSignOut onClick={() => props.setIsSigningIn(true)}>
-          <IconProfile className='fas fa-user-alt'/>
+          <IconProfile className='fas fa-user-alt' />
           Sign In
         </ButtonSignInSignOut>
       )}
@@ -48,16 +48,18 @@ const Link = styled.a`
 `
 
 const Button = styled.button`
+  cursor: pointer;
   margin-left: 1rem;
 `
 
 const ButtonSignInSignOut = styled.div`
+  cursor: pointer;
   margin-left: 3rem;
 `
 
 const IconProfile = styled.i`
+  cursor: pointer;
   margin-right: 0.5rem;
 `
-
 
 export default Menu

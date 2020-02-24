@@ -10,7 +10,7 @@ const getSVG = props => ({
   buses: getBus,
   cars: getCar,
   crowds: getCrowd,
-  'crowd control': getCrowdControl,
+  crowdControl: getCrowdControl,
   facility: getFacility,
   heading: getHeading,
   medics: getMedic

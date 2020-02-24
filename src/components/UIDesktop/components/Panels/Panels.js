@@ -1,5 +1,6 @@
-import PanelChat from './components/PanelChat'
+import PanelComms from './components/PanelComms'
 import PanelGroups from './components/PanelGroups'
+import PanelLayers from './components/PanelLayers'
 // QUESTION: Should this functionality live in panels or in navbar?
 // import PanelFiles from './components/PanelFiles'
 // import PanelOrganizations from './components/PanelOrganizations'
@@ -42,9 +43,11 @@ const Panels = props => {
     <BoundingBox>
       {props.panels.map((panel, i) =>
         panel.heading === 'Groups' ? (
-          <PanelGroups windowDimensions={windowDimensions} key={i} {...panel}/>
+          <PanelGroups windowDimensions={windowDimensions} key={i} {...panel} />
+        ) : panel.heading === 'Annotations' ? (
+          <PanelLayers windowDimensions={windowDimensions} key={i} {...panel} />
         ) : (
-          <PanelChat windowDimensions={windowDimensions} key={i} {...panel}/>
+          <PanelComms windowDimensions={windowDimensions} key={i} {...panel} />
         )
       )}
     </BoundingBox>

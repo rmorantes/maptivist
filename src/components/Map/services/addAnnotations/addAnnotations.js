@@ -1,6 +1,9 @@
 import addLayerIconImageToMap from './addLayerIconImageToMap'
 
-// TODO: Add facilities layer. ~ RM
+// TODO: Layer collections aggregate child layer collections into a single
+// icon via UI. ~ RM
+// TODO: Aggregations can be aggregated (1 layer deep) into a supercluster
+// (evenly places cluster icons in a ring) to prevent overlapping. ~ RM
 const addAnnotations = (map, gun, user) => {
   if (!user) {
     const addLayerCollections = layerCollections => {
@@ -26,23 +29,30 @@ const addAnnotations = (map, gun, user) => {
               })
             })
           })
-          map.addSource(layerCollection.name, source)
+          map.addSource(layerCollection.path, source)
           gun.get(layerCollection.layers).map().on(async layer => {
             if (layer.iconImagePropsJSON) {
               const iconImageProps = JSON.parse(layer.iconImagePropsJSON)
               const data = JSON.parse(layer.dataJSON)
               await addLayerIconImageToMap(map, iconImageProps)
-              if (layerCollection.name.includes('Units')) {
+              // If the layer collection is an actual layer collection, versus
+              // a layer-collection-as-a-folder
+              // NOTE: Assuming for now layer-collections-as-folders don't
+              // themselves have corresponding layers/their own map icon - will
+              // probably change once faction clustering is implemented
+              // (EX: disparate HK Gov units are aggregated under a HK Gov flag
+              // icon when zooming out past a certain level). ~ RM
+              if (!layerCollection.layerCollections) {
                 if (data.id.slice(-8) === '-heading') {
                   map.addLayer(data, data.id.slice(0, -8) + '-cluster')
+                } else if (layerCollection.name.includes('Facilities')) {
+                  map.addLayer(data)
                 } else {
                   // NOTE: Unable to directly add layer after another layer.
                   // ~ RM
                   map.addLayer(data, data.id + '-cluster')
                   map.moveLayer(data.id + '-cluster', data.id)
                 }
-              } else {
-                map.addLayer(data, 'Hong Kong > Protesters > Units > Cars')
               }
             } else {
               map.addLayer(JSON.parse(layer.dataJSON))

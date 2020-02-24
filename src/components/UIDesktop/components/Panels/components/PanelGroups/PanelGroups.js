@@ -18,9 +18,7 @@ const PanelGroups = props => {
 
   return (
     <Panel heading='Groups' {...props}>
-      <Heading> Groups Panel Overview </Heading>
-
-      <Overview> Group and subgroup management is done via the Group Panel. Something like: </Overview>
+      <Overview> PENDING: Group and subgroup management will be done via this scrollable, draggable, and resizable Groups Panel, which will look something like: </Overview>
 
       <Mockup>
         <FeedTabs>
@@ -57,7 +55,7 @@ const PanelGroups = props => {
         <PanelGroups_CardGroup
           count='17'
           hierarchyPosition='3'
-          name='Peacekeepers'
+          name='Guides'
           isCollapsed
         />
 
@@ -121,6 +119,7 @@ const Mockup = styled.div`
   border-radius: 1rem;
   padding-top: 0;
   overflow: hidden;
+  margin: 1rem;
 `
 
 const FeedTabs = styled.div`
