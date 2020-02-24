@@ -5,30 +5,30 @@ const SCAFFOLDS = [
         layerCollections: [
           {
             layerCollections: [
-              { name: 'Hong Kong > Protesters > Units > Cars' },
-              { name: 'Hong Kong > Protesters > Units > Medics' },
-              { name: 'Hong Kong > Protesters > Units > Crowd Control' },
-              { name: 'Hong Kong > Protesters > Units > Crowds' }
+              { name: 'Cars' },
+              { name: 'Medics' },
+              { name: 'Crowd Control' },
+              { name: 'Crowds' }
             ],
-            name: 'Hong Kong > Protesters > Units'
-          },
-          {
-            layerCollections: [
-              { name: 'Hong Kong > Government > Facilities' },
-              {
-                name: 'Hong Kong > Government > Units',
-                layerCollections: [
-                  { name: 'Hong Kong > Government > Units > Cars' },
-                  { name: 'Hong Kong > Government > Units > Buses' },
-                  { name: 'Hong Kong > Government > Units > Medics' },
-                  { name: 'Hong Kong > Government > Units > Crowd Control' }
-                ]
-              }
-            ],
-            name: 'Hong Kong > Government'
+            name: 'Units'
           }
         ],
-        name: 'Hong Kong > Protesters'
+        name: 'Protesters'
+      },
+      {
+        layerCollections: [
+          {
+            name: 'Units',
+            layerCollections: [
+              { name: 'Cars' },
+              { name: 'Buses' },
+              { name: 'Medics' },
+              { name: 'Crowd Control' }
+            ]
+          },
+          { name: 'Facilities' }
+        ],
+        name: 'Government'
       }
     ],
     name: 'Hong Kong'

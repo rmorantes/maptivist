@@ -16,7 +16,8 @@ const initializeMap = (
 ) => {
   const map = new mapboxgl.Map({
     accessToken: 'pk.eyJ1Ijoicm1vcmFudGVzIiwiYSI6ImNqYTRtaWp5MzRjcXEzMXBveWViOGNjYm0ifQ.lt1qdGpfbbrT328BOUhIpQ',
-    center: [114.105942, 22.397843],
+    // center: [114.105942, 22.397843],
+    center: [114.169249, 22.318095],
     container: 'map',
     fadeDuration: 0,
     // TODO: Replace Mapbox-served vector tiles (via the style prop) with
@@ -29,7 +30,7 @@ const initializeMap = (
     // TODO: Design custom map style, attach to app (no Mapbox API call). ~ RM
     // * https://openmaptiles.org/docs/style/maputnik/
     style: 'mapbox://styles/mapbox/streets-v11',
-    zoom: 10
+    zoom: 16
   })
   const Draw = new MapboxDraw({
     displayControlsDefault: false

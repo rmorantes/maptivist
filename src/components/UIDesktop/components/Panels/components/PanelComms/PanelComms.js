@@ -1,10 +1,8 @@
 import Panel from '../Panel'
 
-const PanelChat = props => (
-  <Panel heading='Chat' {...props}>
-    <Heading> Chat Panel Overview </Heading>
-
-    <Overview> Direct communication between users is done via the Comms Panel. Something like (from Jackie's perspective): </Overview>
+const PanelComms = props => (
+  <Panel {...props}>
+    <Overview> PENDING: Users will be able to communicate by text and voice via this scrollable, draggable, and resizable Comms Panel, which will look something like (from Jackie's perspective): </Overview>
 
     <Features>
       <Mockup>
@@ -157,11 +155,10 @@ const Mockup = styled.div`
   border: solid white 0.125rem;
   border-top: none;
   padding-top: 0;
-  margin-left: -1.5rem;
-  margin-right: -0.75rem;
-  margin-top: 1.5rem;
   border-radius: 1rem;
   overflow: hidden;
+  margin-left: -0.5rem;
+  margin-top: 1.5rem;
 `
 
 const FeedTabs = styled.div`
@@ -242,4 +239,4 @@ const Feature = styled.li`
   margin-top: 1rem;
 `
 
-export default PanelChat
+export default PanelComms

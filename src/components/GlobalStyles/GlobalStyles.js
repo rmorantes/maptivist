@@ -22,7 +22,6 @@ const GlobalStyles = () => (
         overflow: hidden;
       }
 
-
       ::selection {
         background: none;
       }
